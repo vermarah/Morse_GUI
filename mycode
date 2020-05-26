@@ -1,0 +1,72 @@
+import RPi.GPIO
+from gpiozero import LED
+from time import sleep
+RPi.GPIO.setmode(RPi.GPIO.BCM)
+
+from guizero import App , Text , TextBox , PushButton
+
+led1=LED(18)
+led2=LED(14)
+dic = { ' ':'/',
+'A':'.-',
+'B':'-...', 
+'C':'-.-.', 
+'D':'-..', 
+'E':'.', 
+'F':'..-.', 
+'G':'--.', 
+'H':'....',
+'I':'..', 
+'J':'.---', 
+'K':'-.-', 
+'L':'.-..',
+'M':'--', 
+'N':'-.',
+'O':'---', 
+'P':'.--.', 
+'Q':'--.-',
+'R':'.-.', 
+'S':'...', 
+'T':'-',
+'U':'..-',
+'V':'...-',
+'W':'.--',
+'X':'-..-',
+'Y':'-.--',
+'Z':'--..'}
+
+def morse_code():
+    text=d.value
+    txt = text[0:12]
+    code = [dic[i.upper()] + ' ' for i in txt if i.upper() in dic.keys()]
+    morse=''.join(code)
+    print(morse)
+    for i in morse:
+        if i=='.': 
+            led1.on()
+            led2.on()  
+            sleep(2)
+            led1.off()
+            led2.off()
+            sleep(2)
+            
+            
+        elif i=='-':
+            led1.on() 
+            led2.on()
+            sleep(4)
+            led1.off()
+            led2.off()
+            sleep(2)
+            
+        else:
+            sleep(2)
+
+r = App(title = " MORSE CODE ", bg = "blue")
+d= TextBox(r,width=16)
+V = Text(r,text=" ENTER YOUR NAME ", bg = "white")
+
+
+txt=PushButton(r,command=morse_code,text="GO!!")
+
+r.display()
